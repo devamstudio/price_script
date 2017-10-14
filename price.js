@@ -26,7 +26,7 @@ $(document).ready(function(){
 	//get options color
 	
 	$('.price_section:first-child table tr').each(function(){
-		option_attrib.push( $(this).find('td:first-child').text().replace(/ /g,'_') );
+		option_attrib.push( $(this).find('td:first-child').text() );
 	})
 	option_attrib.splice(0, 1);
 	
@@ -75,7 +75,7 @@ $(document).ready(function(){
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//write calc
-	$(".calculator").append('<div class="calculator_form"></div><p class="clearfix summ text-center">Цена: <b><span id="price_value"></span> руб.</b></p><hr><p><small id="price_descr"></small></p>');
+	$(".calculator").append('<div class="calculator_form col-12 pb-3 "></div><p class="clearfix summ text-center">Цена: <b><span id="price_value"></span> руб.</b></p><p><small id="price_descr"></small></p>');
 	////variants
 	if(price_count != 1)
 	{
@@ -85,14 +85,14 @@ $(document).ready(function(){
 			$('.price_option_type').append("<option value="+i+">"+price_list[i].title+"</option>");
 		}
 	}
-	$('.calculator_form').append('<div class="row"><div class="col-5 text-right">'+option_edition_title+'</div><select class="price_option price_option_edition col-7"></select></div>');
+	$('.calculator_form').append('<div class="row"><div class="col-5 text-right my-1">'+option_edition_title+'</div><select class="price_option price_option_edition col-7 my-1"></select></div>');
 	for(var i = 0; i < option_edition.length; i++)
 	{
 		$('.price_option_edition').append("<option value="+option_edition[i]+">"+option_edition[i]+"</option>");
 	}
 	if(option_attrib.length != 1)
 	{
-		$('.calculator_form').append('<div class="row"><div class="col-5 text-right">'+option_attrib_title+'</div><select class="price_option price_option_attrib col-7"></select></div>');
+		$('.calculator_form').append('<div class="row"><div class="col-5 text-right my-1">'+option_attrib_title+'</div><select class="price_option price_option_attrib col-7 my-1"></select></div>');
 		for(var i = 0; i < option_attrib.length; i++)
 		{
 			$('.price_option_attrib').append("<option value="+option_attrib[i].replace(/ /g,'_')+">"+option_attrib[i]+"</option>");
@@ -159,7 +159,7 @@ function price_output()
 		}
 		else if(tmp_case === 1)
 		{
-			if(price_list[tmp_parent].table[i].edition == tmp_edition && price_list[tmp_parent].table[i].attrib == tmp_attrib)
+			if(price_list[tmp_parent].table[i].edition == tmp_edition && price_list[tmp_parent].table[i].attrib.replace(/ /g,'_') == tmp_attrib)
 			{
 				price_current = price_list[tmp_parent].table[i].price
 			}

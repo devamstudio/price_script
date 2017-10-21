@@ -75,24 +75,24 @@ $(document).ready(function(){
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	//write calc
-	$(".calculator").append('<div class="calculator_form col-12 pb-3 "></div><p class="clearfix summ text-center">Цена: <b><span id="price_value"></span> руб.</b></p><p><small id="price_descr"></small></p>');
+	$(".calculator").append('<div class="calculator_form col-12 pb-3"></div><p class="clearfix summ text-center">Цена: <b><span id="price_value"></span> руб.</b></p><p><small id="price_descr"></small></p>');
 	////variants
 	if(price_count != 1)
 	{
-		$('.calculator_form').append('<div class="row"><select class="price_option price_option_type col-12"></select></div>');
+		$('.calculator_form').append('<div class="row form-group"><select class="price_option price_option_type col-12 form-control"></select></div>');
 		for(var i = 0; i < price_list.length; i++)
 		{
 			$('.price_option_type').append("<option value="+i+">"+price_list[i].title+"</option>");
 		}
 	}
-	$('.calculator_form').append('<div class="row"><div class="col-5 text-right my-1">'+option_edition_title+'</div><select class="price_option price_option_edition col-7 my-1"></select></div>');
+	$('.calculator_form').append('<div class="row form-group"><div class="col-5 text-right my-1 col-form-label">'+option_edition_title+'</div><select class="price_option price_option_edition col-7 my-1 form-control"></select></div>');
 	for(var i = 0; i < option_edition.length; i++)
 	{
 		$('.price_option_edition').append("<option value="+option_edition[i]+">"+option_edition[i]+"</option>");
 	}
 	if(option_attrib.length != 1)
 	{
-		$('.calculator_form').append('<div class="row"><div class="col-5 text-right my-1">'+option_attrib_title+'</div><select class="price_option price_option_attrib col-7 my-1"></select></div>');
+		$('.calculator_form').append('<div class="row form-group"><div class="col-5 text-right my-1 col-form-label">'+option_attrib_title+'</div><select class="price_option price_option_attrib col-7 my-1 form-control"></select></div>');
 		for(var i = 0; i < option_attrib.length; i++)
 		{
 			$('.price_option_attrib').append("<option value="+option_attrib[i].replace(/ /g,'_')+">"+option_attrib[i]+"</option>");

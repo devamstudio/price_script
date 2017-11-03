@@ -1,41 +1,94 @@
-//data
-var price_list = new Array();
-//triggers
-var price_count = 1;
-var coef = 1;
-var parent_section = 0;
-var price_current = 0;
-////
-var option_edition_title = 'Тираж';
-var option_edition = new Array();
-//
-var option_attrib_title = '';
-var option_attrib = new Array();
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// INIT SETTINGS
+var tbf_s = new Object();
+// INIT SETTINGS END
+
+// INIT DATA
+var tbf_class = new Array();
+var tbf_object_parent = 0;
+
+// INIT DATA END
+
 
 $(document).ready(function(){
-	// get coef
-    coef = parseFloat($("#coef").text());
-	//get triggers globe
-	price_count = $('.price_section').length;
-	//get options edition
-	$('.price_section:first-child table tr').eq(0).find('td').each(function(){
-		option_edition.push( $(this).text() );
+	// SET AND GET SETTINGS
+	// Properties //
+	tbf_s.p_multiplier = parseFloat($("#coef").text());
+	tbf_s.p_result = 0;
+	tbf_s.p_number = $('.tbf_object').length;
+	tbf_s.p_categories = $(".tbf_filter").data('property-categories');
+	tbf_s.p_edition = new Array();
+	tbf_s.p_second_parametr = new Array();
+	// Triggers //
+	if( $(".tbf_filter").data('property-categories') ) tbf_s.tr_categories = true;
+	tbf_s.tr_description = $(".tbf_filter").data('trigger-description');
+	//tbf_s.tr_ = ;
+	// Titles //
+	tbf_s.p_edition_title = 'Тираж'; //Default value
+	if( $(".tbf_filter").data('title-edition-parametr') )
+	{
+	   tbf_s.p_edition_title = $(".tbf_filter").data('title-edition-parametr');
+	}
+	if( $(".tbf_filter").data('title-additional-parametr') )
+	{
+	   tbf_s.p_second_parametr_title = $(".tbf_filter").data('title-additional-parametr');
+	}
+	else
+	{
+		tbf_s.p_second_parametr_title = $('.tbf_object:first-child table tr').eq(0).find('td').eq(0).text();
+	}
+	//tbf_s.r_ = ;
+	// Design //
+	//tbf_s.d_ = ;
+	// SET AND GET SETTINGS END
+	
+	get_values();
+	write_on_page();
+	price_output();
+	
+	//operate calc
+	$('.tbf_property').on('change', function(){
+		price_output();
 	})
-	option_attrib_title = option_edition.splice(0, 1);
+	//view categories
+	$('.tbf_property_category label').click(function(){
+		setTimeout(function(){
+			category_output();
+		}, 10)
+	})
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//console log
+//	console.log('Кол-во таблиц: '+tbf_s.p_number)
+//	console.log('Опции тираж: '+tbf_s.p_edition)
+//	console.log('Опции цветность: '+tbf_s.p_second_parametr)
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+});
+
+function get_values()
+{
+	//get triggers globe
+	tbf_s.p_number = $('.tbf_object').length;
+	//get options edition
+	$('.tbf_object').eq(0).find('table tr').eq(0).find('td').each(function(){
+		tbf_s.p_edition.push( $(this).text().trim() );
+		//console.log( tbf_s.p_edition )
+	})
+	tbf_s.p_edition.splice(0, 1);
 	//get options color
 	
-	$('.price_section:first-child table tr').each(function(){
-		option_attrib.push( $(this).find('td:first-child').text() );
+	$('.tbf_object').eq(0).find('table tr').each(function(){
+		tbf_s.p_second_parametr.push( $(this).find('td:first-child').text().trim() );
+		//console.log( $(this).find('td:first-child').text() )
 	})
-	option_attrib.splice(0, 1);
+	tbf_s.p_second_parametr.splice(0, 1);
 	
 	// get data
-	$('.price_section').each(function(){
+	$('.tbf_object').each(function(){
 		//get/write
-		var price_table = new Object();
-		price_table.title = $(this).find('.title').text();
-		price_table.descr = $(this).find('.descr').text();
+		var tbf_object = new Object();
+		if( $(this).data('category') ) tbf_object.category = $(this).data('category');
+		tbf_object.title = $(this).data('title');
+		if( $(this).data('description') ) tbf_object.descr = $(this).data('description');
 		//ghost data
 		var gh_prices = new Array();
 		var gh_height = $(this).find('tbody > tr').length;
@@ -46,128 +99,170 @@ $(document).ready(function(){
 		if( $(this).find('table *').is('thead') ) 
 		{
 			start_string = 0;
-			//option_attrib_title = $(this).find('table thead tr').eq(0).find('td').eq(0).text;
+			//tbf_s.p_second_parametr_title = $(this).find('table thead tr').eq(0).find('td').eq(0).text;
 		}
 		else 
 		{
 			start_string = 1;
-			//option_attrib_title = $(this).find('table tr td').eq(0).text;
+			//tbf_s.p_second_parametr_title = $(this).find('table tr td').eq(0).text;
 		}
 		for(var i = start_string; i < gh_height; i++)
 		{
 			for(var j = 0; j < gh_width; j++)
 			{
 				var gh_obj = new Object();
-				gh_obj.edition = option_edition[j];
-				gh_obj.attrib = option_attrib[i];
-				gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).text();
+				gh_obj.edition = tbf_s.p_edition[j].replace(/ /g,'_');
+				gh_obj.attrib = tbf_s.p_second_parametr[i];
+				gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).text().trim();
 				//console.log(gh_obj.price)
 				//push
 				gh_prices.push(gh_obj);
 			}
 		}
 		//
-		price_table.table = gh_prices;
+		tbf_object.table = gh_prices;
 		//push
-		price_list.push(price_table);
+		tbf_class.push(tbf_object);
 	})
-	
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+	console.log(tbf_class);
+}
+function write_on_page()
+{
 	//write calc
-	$(".calculator").append('<div class="calculator_form col-12 pb-3"></div><p class="clearfix summ text-center">Цена: <b><span id="price_value"></span> руб.</b></p><p><small id="price_descr"></small></p>');
+	$(".tbf_filter").append('<div class="tbf_filter_form col-12 pb-3"></div><p class="text-center">Цена: <b><span id="tbf_result"></span> руб.</b></p>');
+	if( tbf_s.tr_description != false )
+	{
+		$(".tbf_filter").append('<p class="text-center"><small id="tbf_result_description"></small></p>');
+	}
+	
+	////categories
+	if( tbf_s.tr_categories )
+	{
+		$('.tbf_filter_form').append('<div class="row"><div class="btn-group col px-0 mb-3 tbf_property tbf_property_category" data-toggle="buttons"></div></div>');
+		for(var i = 0; i < tbf_s.p_categories.length; i++)
+		{
+			if( i==0 ) 
+			{
+				$('.tbf_property_category').append('<label class="btn btn-primary col-form-label active"><input class="tbf_property_category_input" type="radio" value="'+tbf_s.p_categories[i]+'" name="price_category" id="option'+i+'" autocomplete="off" checked>'+tbf_s.p_categories[i]+'</label>');
+			}
+			else
+			{
+				$('.tbf_property_category').append('<label class="btn btn-primary col-form-label"><input class="tbf_property_category_input" type="radio" value="'+tbf_s.p_categories[i]+'" name="price_category" id="option'+i+'" autocomplete="off">'+tbf_s.p_categories[i]+'</label>');
+			}
+		}
+	}
+	////categories END
+	
 	////variants
-	if(price_count != 1)
+	if(tbf_s.p_number != 1)
 	{
-		$('.calculator_form').append('<div class="row form-group"><select class="price_option price_option_type col-12 form-control"></select></div>');
-		for(var i = 0; i < price_list.length; i++)
+		$('.tbf_filter_form').append('<div class="row form-group"><select class="tbf_property tbf_property_type col-12 form-control"></select></div>');
+		for(var i = 0; i < tbf_class.length; i++)
 		{
-			$('.price_option_type').append("<option value="+i+">"+price_list[i].title+"</option>");
+			if( tbf_s.tr_categories )
+			{
+				if( tbf_class[i].category == $('.tbf_property_category label.active input').val() )
+				{
+					$('.tbf_property_type').append("<option value='"+i+"' data-category='"+tbf_class[i].category+"'>"+tbf_class[i].title+"</option>");
+				}
+			}
+			else
+			{
+				$('.tbf_property_type').append("<option value='"+i+"'>"+tbf_class[i].title+"</option>");
+			}
 		}
 	}
-	$('.calculator_form').append('<div class="row form-group"><div class="col-5 text-right my-1 col-form-label">'+option_edition_title+'</div><select class="price_option price_option_edition col-7 my-1 form-control"></select></div>');
-	for(var i = 0; i < option_edition.length; i++)
-	{
-		$('.price_option_edition').append("<option value="+option_edition[i]+">"+option_edition[i]+"</option>");
-	}
-	if(option_attrib.length != 1)
-	{
-		$('.calculator_form').append('<div class="row form-group"><div class="col-5 text-right my-1 col-form-label">'+option_attrib_title+'</div><select class="price_option price_option_attrib col-7 my-1 form-control"></select></div>');
-		for(var i = 0; i < option_attrib.length; i++)
-		{
-			$('.price_option_attrib').append("<option value="+option_attrib[i].replace(/ /g,'_')+">"+option_attrib[i]+"</option>");
-		}
-	}
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////variants END
 	
-	//init price on page
+	////edition
+	$('.tbf_filter_form').append('<div class="row form-group"><div class="col-5 text-right my-1 col-form-label">'+tbf_s.p_edition_title+'</div><select class="tbf_property tbf_property_edition col-7 my-1 form-control"></select></div>');
+	for(var i = 0; i < tbf_s.p_edition.length; i++)
+	{
+		$('.tbf_property_edition').append("<option value="+tbf_s.p_edition[i].replace(/ /g,'_')+">"+tbf_s.p_edition[i]+"</option>");
+	}
+	////edition END
+	
+	////addition attribute
+	if(tbf_s.p_second_parametr.length != 1)
+	{
+		$('.tbf_filter_form').append('<div class="row form-group"><div class="col-5 text-right my-1 col-form-label">'+tbf_s.p_second_parametr_title+'</div><select class="tbf_property tbf_property_attrib col-7 my-1 form-control"></select></div>');
+		for(var i = 0; i < tbf_s.p_second_parametr.length; i++)
+		{
+			$('.tbf_property_attrib').append("<option value="+tbf_s.p_second_parametr[i].replace(/ /g,'_')+">"+tbf_s.p_second_parametr[i]+"</option>");
+		}
+	}
+	////addition attribute END
+}
+
+//output category
+function category_output()
+{
+	$('.tbf_property_type option').remove();
+	for(var i = 0; i < tbf_class.length; i++)
+	{
+		if( tbf_class[i].category == $('.tbf_property_category .active input').val() )
+		{
+			$('.tbf_property_type').append("<option value='"+i+"' data-category='"+tbf_class[i].category+"'>"+tbf_class[i].title+"</option>");
+		}
+	}
 	price_output();
-	//init price on page END
-	
-	//operate calc
-	$('.price_option').on('change', function(){
-		price_output();
-	})
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	//console log
-	//console.log('Кол-во таблиц: '+price_count)
-	//console.log('Опции тираж: '+option_edition)
-	//console.log('Опции цветность: '+option_attrib)
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-});
+}
+//output category END
 
 //output price
 function price_output()
-{
+{	
 	var tmp_case = 0;
 	var tmp_parent = 0;
 	var tmp_attrib = 0;
 	//check type
-	if( $('*').is('.price_option_type') )
+	if( $('*').is('.tbf_property_type') )
 	{
-		tmp_parent = $('.price_option_type').val();
+		tmp_parent = $('.tbf_property_type').val();
 		console.log('Есть родитель: '+tmp_parent)
 	}
 	else 
 	{
-		tmp_parent = parent_section;
+		tmp_parent = tbf_object_parent;
 		console.log('Нет родителя: '+tmp_parent)
 	}
 	//check type END
 	//check edition
-	var tmp_edition = $('.price_option_edition').val();
+	var tmp_edition = $('.tbf_property_edition').val();
 	//check edition END
 	//check second attrib
-	if( $('*').is('.price_option_attrib') )
+	if( $('*').is('.tbf_property_attrib') )
 	{
-		tmp_attrib = $('.price_option_attrib').val().replace(/ /g,"_");
+		tmp_attrib = $('.tbf_property_attrib').val().replace(/ /g,"_");
 		tmp_case = 1;
 	}
 	//check second attrib
 	
+	
+	
 	//compare object
-	console.log(price_list[tmp_parent].table.length)
-	for(var i = 0; i < price_list[tmp_parent].table.length; i++)
+	console.log(tbf_class[tmp_parent].table)
+	for(var i = 0; i < tbf_class[tmp_parent].table.length; i++)
 	{
 		if(tmp_case === 0)
 		{
-			if(price_list[tmp_parent].table[i].edition == tmp_edition)
+			if(tbf_class[tmp_parent].table[i].edition == tmp_edition)
 			{
-				price_current = price_list[tmp_parent].table[i].price
+				tbf_s.p_result = tbf_class[tmp_parent].table[i].price
 			}
 		}
 		else if(tmp_case === 1)
 		{
-			if(price_list[tmp_parent].table[i].edition == tmp_edition && price_list[tmp_parent].table[i].attrib.replace(/ /g,'_') == tmp_attrib)
+			if(tbf_class[tmp_parent].table[i].edition == tmp_edition && tbf_class[tmp_parent].table[i].attrib.replace(/ /g,'_') == tmp_attrib)
 			{
-				price_current = price_list[tmp_parent].table[i].price
+				tbf_s.p_result = tbf_class[tmp_parent].table[i].price
 			}
 		}
 	}
 	//compare object END
 	// write price
-	$('#price_value').text(price_current*coef)
-	$('#price_descr').text(price_list[tmp_parent].descr)
+	$('#tbf_result').text(tbf_s.p_result*tbf_s.p_multiplier)
+	$('#tbf_result_description').text(tbf_class[tmp_parent].descr)
 	
 }
+//output price END

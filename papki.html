@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ciferblat: Price script</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="http://www.ciferblat.spb.ru/modules/pages/assets/css/style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	<style>
+		.table{display:block;}
+	</style>
+</head>
+<body>
+	<div class="container py-5">
+		<nav>
+			<ul>
+				<li><a href="index.html">Многомерка</a></li>
+				<li><a href="onestroke.html">Одномерка</a></li>
+				<li><a href="2d.html">Двумерка</a></li>
+				<li><a href="catalog.html">Альтернатива каталогам</a></li>
+			</ul>
+		</nav>
+	</div>
+	<main class='container'>
+		<div class="row py-3">
+			<div class="col-12 col-lg-8">
+				<div class="tbf_object" data-category="С кармашком" data-title="Папка А4 с кармашком" data-description="Папка А4 с пластиковым кармашком, 4+0, биговка, фальцовка, картон 300 гр.">
+					<table class="first-level">
+				<thead>
+				<tr>
+					<td>Тираж
+					</td>
+					<td>10
+					</td>
+					<td>30
+					</td>
+					<td>50
+					</td>
+					<td>100
+					</td>
+					<td>150
+					</td>
+					<td>200
+					</td>
+					<td>300
+					</td>
+					<td>500
+					</td>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>Стоимость
+					</td>
+					<td>1080
+					</td>
+					<td>2705
+					</td>
+					<td>3925
+					</td>
+					<td>7590
+					</td>
+					<td>10470
+					</td>
+					<td>12860
+					</td>
+					<td>18300
+					</td>
+					<td>27550
+					</td>
+				</tr>
+				</tbody>
+				</table>
+				</div>
+					<div class="tbf_object" data-category="Вырубная" data-title="Папка А4 вырубная" data-description="Папка вырубная А4, картон 300гр.">
+				<table class="first-level">
+				<thead>
+				<tr>
+					<td>Цветность
+					</td>
+					<td>50
+					</td>
+					<td>100
+					</td>
+					<td>150
+					</td>
+					<td>200
+					</td>
+					<td>250
+					</td>
+					<td>300
+					</td>
+					<td>350
+					</td>
+					<td>400
+					</td>
+					<td>450
+					</td>
+					<td>500
+					</td>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>4+0
+					</td>
+					<td>7700
+					</td>
+					<td>11235
+					</td>
+					<td>13930
+					</td>
+					<td>15930
+					</td>
+					<td>18660
+					</td>
+					<td>21095
+					</td>
+					<td>23625
+					</td>
+					<td>25760
+					</td>
+					<td>27540
+					</td>
+					<td>29590
+					</td>
+				</tr>
+				<tr>
+					<td>4+4
+					</td>
+					<td>9815
+					</td>
+					<td>13260
+					</td>
+					<td>17110
+					</td>
+					<td>20265
+					</td>
+					<td>22565
+					</td>
+					<td>26135
+					</td>
+					<td>29705
+					</td>
+					<td>32690
+					</td>
+					<td>36140
+					</td>
+					<td>37790
+					</td>
+				</tr>
+				</tbody>
+				</table>
+				</div>
+			</div>
+			<div class="col-12 col-lg-4">
+				<div class="tbf_filter" data-title-additional-parametr="Цветность"></div> <!-- data-property-categories='["С кармашком","Вырубная"]' -->
+			</div>
+		</div>
+		
+	</main>
+	<div id='coef'>1</div>
+	<script src='price.js'></script>
+</body>
+</html>

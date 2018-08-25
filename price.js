@@ -115,8 +115,9 @@ function get_values()
 //				else gh_obj.attrib = tbf_s.p_second_parametr[i];
 				//console.log(gh_obj.attrib)
 				
-				gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).text().trim();
-				//console.log(gh_obj.price)
+				//gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).text().trim(); // Только текст
+				gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).html();
+				console.log(gh_obj.price);
 				//push
 				gh_prices.push(gh_obj);
 				
@@ -317,7 +318,8 @@ function price_output()
 	}
 	//compare object END
 	// write price
-	$('#tbf_result').text(tbf_s.p_result*tbf_s.p_multiplier)
+	//$('#tbf_result').text(tbf_s.p_result*tbf_s.p_multiplier) С множителем
+	$('#tbf_result').html(tbf_s.p_result)
 	$('#tbf_result_description').html(tbf_class[tmp_parent].descr)
 	
 }

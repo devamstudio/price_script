@@ -1,6 +1,6 @@
 // INIT SETTINGS
 var tbf_s = new Object();
-// Design //
+// Design
 tbf_s.d_header = 'mb-3 text-center';
 tbf_s.d_fields = new Object();
 tbf_s.d_fields.offset = 'py-1';
@@ -14,32 +14,34 @@ var tbf_object_parent = 0;
 
 
 $(document).ready(function(){
-	// SET AND GET SETTINGS
-	// Properties //
-	tbf_s.p_multiplier = parseFloat($("#coef").text());
-	tbf_s.p_result = 0;
-	tbf_s.p_number = $('.tbf_object').length;
-	tbf_s.p_categories = $(".tbf_filter").data('property-categories');
-	tbf_s.p_edition = new Array();
-	tbf_s.p_second_parametr = new Array();
-	// Triggers //
-	if( $(".tbf_filter").data('property-categories') ) tbf_s.tr_categories = true;
-	tbf_s.tr_description = $(".tbf_filter").data('trigger-description');
-	tbf_s.tr_categories_click_reload = $(".tbf_filter").data('trigger-categories-click-reload');
-	//tbf_s.tr_ = ;
-	// Titles //
-	tbf_s.t_header = 'Расчет стоимости'; //Default value
-	if( $(".tbf_filter").data('title-header') ) tbf_s.t_header = $(".tbf_filter").data('title-header');
-	tbf_s.t_edition_title = 'Тираж'; //Default value
-	if( $(".tbf_filter").data('title-edition-parametr') ) tbf_s.t_edition_title = $(".tbf_filter").data('title-edition-parametr');
-	tbf_s.t_second_parametr_title = $('.tbf_object').eq(0).find('table tr').eq(0).find('td').eq(0).text();
-	if( $(".tbf_filter").data('title-additional-parametr') ) tbf_s.t_second_parametr_title = $(".tbf_filter").data('title-additional-parametr');
-	//tbf_s.r_ = ;
-	// SET AND GET SETTINGS END
-	
-	get_values();
-	write_on_page();
-	price_output();
+	if( $(".tbf_object").length > 0 ){
+		// SET AND GET SETTINGS
+		// Properties
+		tbf_s.p_multiplier = parseFloat($("#coef").text());
+		tbf_s.p_result = 0;
+		tbf_s.p_number = $('.tbf_object').length;
+		tbf_s.p_categories = $(".tbf_filter").data('property-categories');
+		tbf_s.p_edition = new Array();
+		tbf_s.p_second_parametr = new Array();
+		// Triggers
+		if( $(".tbf_filter").data('property-categories') ) tbf_s.tr_categories = true;
+		tbf_s.tr_description = $(".tbf_filter").data('trigger-description');
+		tbf_s.tr_categories_click_reload = $(".tbf_filter").data('trigger-categories-click-reload');
+		//tbf_s.tr_ = ;
+		// Titles
+		tbf_s.t_header = 'Расчет стоимости'; //Default value
+		if( $(".tbf_filter").data('title-header') ) tbf_s.t_header = $(".tbf_filter").data('title-header');
+		tbf_s.t_edition_title = 'Тираж'; //Default value
+		if( $(".tbf_filter").data('title-edition-parametr') ) tbf_s.t_edition_title = $(".tbf_filter").data('title-edition-parametr');
+		tbf_s.t_second_parametr_title = $('.tbf_object').eq(0).find('table tr').eq(0).find('td').eq(0).text();
+		if( $(".tbf_filter").data('title-additional-parametr') ) tbf_s.t_second_parametr_title = $(".tbf_filter").data('title-additional-parametr');
+		//tbf_s.r_ = ;
+		// SET AND GET SETTINGS END
+
+		get_values();
+		write_on_page();
+		price_output();
+	}
 	
 	//operate calc
 	$(document).on('change', '.tbf_property', function(){
@@ -101,7 +103,7 @@ function get_values()
 				
 				var gh_obj = new Object();
 				//
-				gh_obj.edition = $(this).find('table tr').eq(0).find('td').eq(j+1).text().replace(/ /g,'_').trim();
+				gh_obj.edition = $(this).find('table tr').eq(0).find('td').eq(j+1).text().trim().replace(/ /g,'_');
 //				var gh_edition_from_table = $(this).find('table tr').eq(0).find('td').eq(j+1).text().replace(/ /g,'_').trim();
 				//console.log('Вертикаль: '+(i+1))
 				//console.log('Горизонталь: '+(j+1))
@@ -116,7 +118,7 @@ function get_values()
 				//console.log(gh_obj.attrib)
 				
 				//gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).text().trim(); // Только текст
-				gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).html();
+				gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).html().trim();
 				console.log(gh_obj.price);
 				//push
 				gh_prices.push(gh_obj);

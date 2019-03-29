@@ -17,7 +17,7 @@ $(document).ready(function(){
 	if( $(".tbf_object").length > 0 ){
 		// SET AND GET SETTINGS
 		// Properties
-		tbf_s.p_multiplier = parseFloat($("#coef").text());
+		tbf_s.p_multiplier = 1;
 		tbf_s.p_result = 0;
 		tbf_s.p_number = $('.tbf_object').length;
 		tbf_s.p_categories = $(".tbf_filter").data('property-categories');

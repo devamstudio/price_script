@@ -119,7 +119,7 @@ function get_values()
 				
 				//gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).text().trim(); // Только текст
 				gh_obj.price = $(this).find('table tbody tr').eq(i).find('td').eq(j+1).html().trim();
-				console.log(gh_obj.price);
+				//console.log(gh_obj.price);
 				//push
 				gh_prices.push(gh_obj);
 				
@@ -131,7 +131,7 @@ function get_values()
 		//push
 		tbf_class.push(tbf_object);
 	})
-	console.log(tbf_class);
+	//console.log(tbf_class);
 }
 function get_edition(counter)
 {
